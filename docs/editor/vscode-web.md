@@ -1,214 +1,2403 @@
----
-Order: 11
-Area: editor
-TOCTitle: VS Code for the Web
-ContentId: d665a790-1da1-4f45-bc0f-c09822528e55
-PageTitle: Visual Studio Code for the Web
-DateApproved: 05/02/2024
-MetaDescription: Visual Studio Code for the Web and the vscode.dev URL
----
-# Visual Studio Code for the Web
 
-Visual Studio Code for the Web provides a free, zero-install Microsoft Visual Studio Code experience running entirely in your browser, allowing you to quickly and safely browse source code repositories and make lightweight code changes. To get started, go to [https://vscode.dev](https://vscode.dev) in your browser.
-
-VS Code for the Web has many of the features of VS Code Desktop that you love, including search and syntax highlighting while browsing and editing, along with extension support to work on your codebase and make simpler edits. In addition to opening repositories, forks, and pull requests from source control providers like GitHub and Azure Repos, you can also work with code that is stored on your local machine.
-
-VS Code for the Web runs entirely in your web browser, so there are certain limitations compared to the desktop experience, which you can read more about [below](#limitations).
-
-## Relationship to VS Code Desktop
-
-VS Code for the Web provides a browser-based experience for navigating files and repositories and committing lightweight code changes. However, if you need access to a runtime to run, build, or debug your code, you want to use platform features such as a terminal, or you want to run extensions that aren't supported in the web, we recommend moving your work to the desktop application, [GitHub Codespaces](https://github.com/features/codespaces), or using [Remote - Tunnels](#use-your-own-compute-with-remote-tunnels) for the full capabilities of VS Code. In addition, VS Code Desktop lets you use a full set of keyboard shortcuts not limited by your browser.
-
-When you're ready to switch, you'll be able to ["upgrade"](#continue-working-in-a-different-environment) to the full VS Code experience with a few clicks.
-
-You can also switch between the Stable and Insiders versions of VS Code for the Web by selecting the gear icon, then **Switch to Insiders Version...**, or by navigating directly to [https://insiders.vscode.dev](https://insiders.vscode.dev).
-
-## Opening a project
-
-By navigating to [https://vscode.dev](https://vscode.dev), you can create a new local file or project, work on an existing local project, or access source code repositories hosted elsewhere, such as on GitHub and Azure Repos (part of Azure DevOps).
-
-You can create a new local file in the web just as you would in a VS Code Desktop environment, using **File** > **New File** from the Command Palette (`kbstyle(F1)`).
-
-## GitHub repos
-
-You can open a GitHub repository in VS Code for the Web directly from a URL, following the schema: `https://vscode.dev/github/<organization>/<repo>`. Using the [VS Code repository](https://github.com/microsoft/vscode) as an example, this would look like: `https://vscode.dev/github/microsoft/vscode`.
-
-This experience is delivered at a custom `vscode.dev/github` URL, which is powered by the [GitHub Repositories](https://marketplace.visualstudio.com/items?itemName=GitHub.remotehub) extension (which is part of the broader [Remote Repositories](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-repositories) extension).
-
-GitHub Repositories allows you to remotely browse and edit a repository from within the editor, without needing to pull code onto your local machine. You can learn more about the extension and how it works in our [GitHub Repositories](/docs/sourcecontrol/github.md#github-repositories-extension) guide.
-
->**Note**: The [GitHub Repositories](https://marketplace.visualstudio.com/items?itemName=GitHub.remotehub) extension works in VS Code Desktop as well to provide fast repository browsing and editing. Once you have the extension installed, you can open a repo with the **GitHub Repositories: Open Repository...** command.
-
-You can also open GitHub repositories in `vscode.dev` through your browser's search bar (aka omnibox) by installing the `vscode.dev` [extension](https://chrome.google.com/webstore/detail/vs-code/kobakmhnkfaghloikphojodjebdelppk) for Chrome and Edge. Then, type `code` to activate the omnibox, followed by your repository's name. Suggestions are populated by your browser search history, so if the repo you want doesn't come up, you can also type in the fully qualified `<owner>/<repo>` name to open it, for example `microsoft/vscode`.
-
-![Type `code` in your browser and search a GitHub repository to open in vscode.dev](images/vscode-web/chrome-omnibox-extension.png)
-
-If you're already in VS Code for the Web at [https://vscode.dev](https://vscode.dev), you can alternatively navigate to different repos via the [Remote Repositories](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-repositories) extension commands. Select the remote indicator in the lower left of the Status bar, and you'll be presented with the **Open Remote Repository...** command.
-
-![GitHub Repositories](images/vscode-web/remote-repositories.png)
-
-## Azure Repos
-
-You can open Azure Repos just like Github repos in VS Code for the Web.
-
-When you navigate to a URL with the schema `https://vscode.dev/azurerepos/<organization>/<project>/<repo>`, you will be able to read, search the files in the repo, and commit your changes to Azure Repos. You can fetch, pull, and sync changes, and view branches.
-
-You can open any repository, branch, or tag from Azure Repos in VS Code for the Web by prefixing `vscode.dev` to the Azure Repos URL.
-
-Alternatively, when you are on an Azure DevOps repository or pull request, you can press (`kbstyle(.)`) to open it in VS Code for the Web.
-
-## More custom URLs
-
-Like in the desktop, you can customize VS Code for the Web through a rich ecosystem of extensions that support just about every back end, language, and service. `vscode.dev` includes URLs that provide shortcuts to common experiences.
-
-We've explored a couple of URLs already (`vscode.dev/github` and `vscode.dev/azurerepos`). Here's a more complete list:
-| Service | URL Structure | Docs |
-| --- | --- | --- |
-| GitHub | `/github/<org>/<repo>` | [More info above](#github-repos) |
-| Azure Repos | `/azurerepos/<org>/<project>/<repo>` | [More info above](#azure-repos) |
-| Visual Studio Live Share | `/editor/liveshare/<sessionId>` | [More info below](#visual-studio-live-share) |
-| Visual Studio Marketplace | `/editor/marketplace/<marketplacePublisher>`<br>`/<extensionId>/<extensionVersion>` | [Example route](https://insiders.vscode.dev/editor/marketplace/Brigit/devcontainer-image-convert/0.0.1) to edit [this extension](https://marketplace.visualstudio.com/items?itemName=Brigit.devcontainer-image-convert) |
-| Power Pages | `/power/pages` | [Power Pages docs](https://learn.microsoft.com/power-pages/configure/visual-studio-code-editor) |
-| Profiles | `/editor/profile/github/<GUID>` | [Profiles docs](/docs/editor/profiles.md#save-as-a-github-gist) |
-| Themes | `/editor/theme/<extensionId>` | [More info below](#themes) |
-| MakeCode | `/edu/makecode` | [MakeCode docs](https://arcade.makecode.com/vscode) |
-| VS Code for Education | `/edu` | [VS Code for Education landing page](https://vscodeedu.com/) |
-| Azure Machine Learning (AML) | `/+ms-toolsai.vscode-ai-remote-web` | [AML docs](https://learn.microsoft.com/azure/machine-learning/how-to-launch-vs-code-remote?view=azureml-api-2&tabs=vscode-web) |
-
-Please note that some URLs must be entered in a specific way (for example, `vscode.dev/editor/liveshare` requires an active Live Share session). Please review each service's documentation for specific access and usage information.
-
-There's more information on some of these URLs below.
-
-### Themes
-
-You can share and experience color themes through VS Code for the Web through the URL schema: `https://vscode.dev/editor/theme/<extensionId>`.
-
-For instance, you can go to [https://vscode.dev/editor/theme/sdras.night-owl](https://vscode.dev/editor/theme/sdras.night-owl) to experience the [Night Owl theme](https://marketplace.visualstudio.com/items?itemName=sdras.night-owl) without having to go through the download and install process.
-
-> Note: The color theme URL schema works for themes that are fully declarative (no code).
-
-An extension can define multiple themes. You can use the schema `/editor/theme/<extensionId>/<themeName>`. If no `themeName` is specified, VS Code for the Web will take the first theme.
-
-As a theme author, you can add the following badge to your extension readme to allow users to easily try out your theme in VS Code for the Web (replacing `<extensionId>` with your theme extension's unique identifier):
-
-```markdown
-[![Preview in vscode.dev](https://img.shields.io/badge/preview%20in-vscode.dev-blue)](https://vscode.dev/editor/theme/<extensionId>)
-```
-
-### Visual Studio Live Share
-
-[Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) guest sessions are available in the browser through the `https://vscode.dev/editor/liveshare` URL. The `sessionId` will be passed to the extension to make joining a seamless experience.
-
-## Continue working in a different environment
-
-In some cases, you will want to access a different environment that has the ability to run code. You can switch to working on a repository in a development environment that has support for a local file system and full language and development tooling.
-
-The GitHub Repositories extension makes it easy for you to clone the repository locally, reopen it on the desktop, or create a GitHub codespace for the current repository (if you have the [GitHub Codespaces](https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces) extension installed and access to create GitHub codespaces). To do this, use the **Continue Working On...** command available from the Command Palette (`kbstyle(F1)`) or click on the Remote indicator in the Status bar.
-
-## Saving and sharing work
-
-When working on a local file in the web, your work is saved automatically if you have [Auto Save](/docs/editor/codebasics.md#save-auto-save) enabled. You can also save manually as you do when working in desktop VS Code (for example **File** > **Save**).
-
-When working on a remote repository, your work is saved in the browser's local storage until you commit it. If you open a repo or pull request using GitHub Repositories, you can push your changes in the Source Control view to persist any new work.
-
-You can also continue working in other environments via [Continue Working On](#continue-working-in-a-different-environment).
-
-The first time that you use **Continue Working On** with uncommitted changes, you will have the option to bring your edits to your selected development environment using **Cloud Changes**, which uses a VS Code service to store your pending changes. This is described further in the [GitHub Repositories](/docs/sourcecontrol/github.md#continue-working-on) doc.
-
-## Use your own compute with Remote Tunnels
-
-You may develop against another machine in VS Code for the Web using the [Remote - Tunnels](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-server) extension.
-
-The Remote - Tunnels extension lets you connect to a remote machine, like a desktop PC or virtual machine (VM), via a secure tunnel. You can then securely connect to that machine from anywhere, without the requirement of SSH. This lets you "bring your own compute" to vscode.dev, enabling additional scenarios like running your code in the browser.
-
-You may learn more about Remote - Tunnels in its [documentation](/docs/remote/tunnels.md).
-
-## Safe exploration
-
-VS Code for the Web runs entirely in your web browser's sandbox and offers a very limited execution environment.
-
-When accessing code from remote repositories, the web editor doesn't "clone" the repo, but instead loads the code by invoking the services' APIs directly from your browser; this further reduces the attack surface when cloning untrusted repositories.
-
-When working with local files, VS Code for the Web loads them through your browser's file system access APIs, which limit the scope of what the browser can access.
-
-## Run anywhere
-
-Similar to [GitHub Codespaces](/docs/remote/codespaces.md), VS Code for the Web can run on tablets, like iPads.
-
-## Language support
-
-Language support is a bit more nuanced on the web, including code editing, navigation, and browsing. The desktop experiences are typically powered by language services and compilers that expect a file system, runtime, and compute environment. In the browser, these experiences are powered by language services running in the browser that provide source code tokenization and syntax colorization, completions, and many single-file operations.
-
-Generally, experiences fall into the following categories:
-
-* **Good:** For most programming languages, VS Code for the Web gives you code syntax colorization, text-based completions, and bracket pair colorization. Using a [Tree-sitter](https://tree-sitter.github.io/tree-sitter) syntax tree through the [anycode extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.anycode), we're able to provide additional experiences such as **Outline/Go to Symbol** and **Symbol Search** for popular languages such as C/C++, C#, Java, PHP, Rust, and Go.
-* **Better:** The TypeScript, JavaScript, and Python experiences are all powered by language services that run natively in the browser. With these programming languages, you'll get the "**Good**" experience plus rich single file completions, semantic highlighting, syntax errors, and more.
-* **Best:** For many "webby" languages, such as JSON, HTML, CSS, and LESS, etc., the coding experience in vscode.dev is nearly identical to the desktop (including Markdown preview!).
-
-You can determine the level of language support in your current file through the Language Status Indicator in the Status bar:
-
-![Language status indicator](images/vscode-web/status-indicator.png)
-
-## Limitations
-
-Since VS Code for the Web runs completely within the browser, some experiences will naturally be more constrained when compared to what you can do in the desktop app. For example, the terminal and debugger are not available, which makes sense since you can't compile, run, and debug a Rust or Go application within the browser sandbox.
-
-### Extensions
-
-Only a subset of extensions can run in the browser. You can use the Extensions view to install extensions in the web, and extensions that cannot be installed will have a warning icon and **Learn Why** link. We expect more extensions to become enabled over time.
-
-![Limited extension support](images/vscode-web/extension-limit.png)
-
-When you install an extension, it is saved in the browser's local storage. You can ensure your extensions are synced across VS Code instances, including different browsers and even the desktop, by enabling [Settings Sync](/docs/editor/settings-sync).
-
-When an Extension Pack contains extensions that do not run in the browser sandbox, you will get an informational message with the option to see the extensions included in the pack.
-
-![Python extension pack limit](images/vscode-web/python-extension-limit.png)
-
-When extensions are executed in the browser sandbox, they are more restricted. Extensions that are purely declarative, such as most themes, snippets, or grammars, can run unmodified and are available in VS Code for the Web without any modification from the extension authors. Extensions that are running code need to be updated to support running in the browser sandbox. You can read more about what is involved to support extensions in the browser in the [web extension authors guide](/api/extension-guides/web-extensions.md).
-
-There are also extensions that run in the browser with partial support only. A good example is a language extension that [restricts its support](/docs/nodejs/working-with-javascript.md#partial-intellisense-mode) to single files or the currently opened files.
-
-### File system API
-
-Edge and Chrome today support the [File System API](https://developer.mozilla.org/docs/Web/API/File_System_Access_API), allowing web pages to access the local file system. If your browser does not support the File System API, you cannot open a folder locally, but you can open files instead.
-
-### Browser support
-
-You can use VS Code for the Web in the latest versions of Chrome, Edge, Firefox, and Safari. Older versions of each browser may not work - we only guarantee support for the latest version.
-
-> **Tip:** One way to check the compatible browser version is to look at the version of [Playright](https://playwright.dev/) currently used for testing VS Code and review its supported browser versions. You can find the currently used Playwright version in the VS Code repo's [package.json](https://github.com/microsoft/vscode/blob/main/package.json) file at `devDependencies/@playwright/test`. Once you know the Playwright version, for example `1.37`, you can then review the **Browser Versions** section in their [Release notes](https://playwright.dev/docs/release-notes).
-
-Webviews might appear differently or have some unexpected behavior in Firefox and Safari. You can view issue queries in the VS Code GitHub repo to track issues related to specific browsers, such as with the [Safari label](https://github.com/microsoft/vscode/labels/safari) and [Firefox label](https://github.com/microsoft/vscode/labels/firefox).
-
-There are additional steps you can take to improve your browser experience using VS Code for the Web. Review the [Additional browser setup](#additional-browser-setup) section for more information.
-
-### Mobile support
-
-You can use VS Code for the Web on mobile devices, but smaller screens may have certain limitations.
-
-### Keybindings
-
-Certain keybindings may also work differently in the web.
-
-| Issue | Reason |
-|-|-|
-| `kb(workbench.action.showCommands)` won't launch the Command Palette in Firefox. | `kb(workbench.action.showCommands)` is reserved in Firefox. <br> As a workaround, use `kbstyle(F1)` to launch the Command Palette. |
-| `kb(workbench.action.files.newUntitledFile)` for new file doesn't work in web. | `kb(workbench.action.files.newUntitledFile)` opens a new window instead. <br> As a workaround, you can use `kbstyle(Ctrl+Alt+N)` (`kbstyle(Cmd+Alt+N)` on macOS). |
-| `kb(workbench.action.closeActiveEditor)` for closing an editor doesn't work in web. | `kb(workbench.action.closeActiveEditor)` closes the current tab in browsers. <br> As a workaround, you can use `kbstyle(Ctrl+Shift+Alt+N)` (`kbstyle(Cmd+Shift+Alt+N)` on macOS). |
-| `kb(workbench.action.tasks.build)` will not toggle the favorites bar in the browser. | VS Code for the Web overrides this and redirects to the "Build" menu in the Command Palette. |
-| `kbstyle(Alt+Left)` and `kbstyle(Alt+Right)` should navigate within the editor but may incorrectly trigger tab history navigation. | If focus is outside the editor, these shortcuts trigger tab history navigation instead. |
-
-## Additional browser setup
-
-There are additional browser configuration steps you can take when working with VS Code in a browser.
-
-### Opening new tabs and windows
-
-In certain cases, you may need to open a new tab or window while working in VS Code for the Web. VS Code might ask you for permission to access the clipboard when reading from it. Depending on your browser, you may grant access to the clipboard or otherwise allow for pop-up windows in different ways:
-
-* Chrome, Edge, Firefox: Search for "site permissions" in your browser's settings, or look for the following option in the address bar on the right:
-
-![Allow clipboard access in the browser](images/vscode-web/allow-clipboard-access.png)
-
-* Safari: In the Safari browser, go to **Preferences...** > **Websites** > **Pop-up Windows** > the domain you're accessing (for example, `vscode.dev`), and select **Allow** from the dropdown.
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Muli");
+
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f5f4f1;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .stage {
+            position: relative;
+            min-height: 80vh;
+            width: 800px;
+            margin: auto;
+        }
+
+        .ground-line {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+            height: 6px;
+        }
+
+        .ground-line div {
+            width: 1600px;
+            font-size: 0;
+            -webkit-animation: roadLine 3s infinite linear;
+            -moz-animation: roadLine 3s infinite linear;
+            animation: roadLine 3s infinite linear;
+        }
+
+        .ground-line span {
+            height: 6px;
+            display: inline-block;
+            background-color: #4b1a61;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            border-radius: 6px;
+            vertical-align: bottom;
+            margin-right: 20px;
+        }
+
+        .ground-line .line1 {
+            width: 80px;
+        }
+
+        .ground-line .line2 {
+            width: 580px;
+        }
+
+        .ground-line .line3 {
+            width: 80px;
+        }
+
+        .tree-wrap {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .tree {
+            position: absolute;
+            right: 0;
+            margin-left: -30px;
+            bottom: 6px;
+            z-index: 8;
+            -webkit-animation: tree 6.2s infinite linear;
+            -moz-animation: tree 6.2s infinite linear;
+            animation: tree 6.2s infinite linear;
+        }
+
+        .tree .stem {
+            width: 6px;
+            -webkit-border-radius: 6px 6px 0 0;
+            -moz-border-radius: 6px 6px 0 0;
+            border-radius: 6px 6px 0 0;
+            height: 100px;
+            background-color: #5b1f75;
+        }
+
+        .tree .stem .branch {
+            width: 4px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            background-color: #5b1f75;
+            position: absolute;
+            z-index: 10;
+        }
+
+        .tree .stem .branch1 {
+            bottom: 25px;
+            height: 30px;
+            left: 10px;
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .tree .stem .branch2 {
+            bottom: 40px;
+            height: 20px;
+            right: 8px;
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+
+        .tree .stem .branch3 {
+            bottom: 60px;
+            height: 15px;
+            left: 5px;
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .tree .leef {
+            z-index: -1;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            position: absolute;
+            background-color: #abec39;
+            border: solid 4px #5b1f75;
+        }
+
+        .tree .leef1 {
+            width: 48px;
+            height: 48px;
+            top: -15px;
+            left: -22px;
+        }
+
+        .tree .leef2 {
+            width: 68px;
+            height: 68px;
+            top: 18px;
+            left: -32px;
+        }
+
+        .tree .leef2::after {
+            content: "";
+            width: 50%;
+            height: 50%;
+            position: absolute;
+            background-color: #abec39;
+            z-index: 9;
+            left: 25%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            top: -18px;
+        }
+
+        .vehicle-body {
+            width: 500px;
+            height: 220px;
+            position: absolute;
+            right: 20%;
+            bottom: 33px;
+            z-index: 9;
+
+            -webkit-border-radius: 15px 60px 0 15px;
+            -moz-border-radius: 15px 60px 0 15px;
+            border-radius: 15px 60px 0 15px;
+            animation: run 3s infinite ease;
+
+        }
+
+        @keyframes run {
+            0% {
+                right: 20%;
+
+            }
+
+            20% {
+                right: 20%;
+
+            }
+
+            30% {
+                right: 20%;
+
+            }
+
+            40% {
+                right: 20%;
+
+            }
+
+            50% {
+                right: 20%;
+
+            }
+
+            60% {
+                right: -150%;
+
+            }
+            65% {
+                right: -150%;
+
+            }
+
+            70% {
+                right: -150%;
+
+            }
+            75% {
+                right: -150%;
+
+            }
+            80% {
+                right: -150%;
+
+            }
+            85% {
+                right: -150%;
+
+            }
+            90% {
+                right: -150%;
+
+            }
+            95% {
+                right: -150%;
+
+            }
+            100% {
+                right: -150%;
+
+            }
+        }
+
+
+        .vehicle-body .wrap-body {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-animation: body 3s infinite ease;
+            -moz-animation: body 3s infinite ease;
+            animation: body 3s infinite ease;
+        }
+
+        .vehicle-body .body-cover {
+            position: absolute;
+            border: solid 5px #4b1a61;
+            width: 100%;
+            background-color: #c6edff;
+            height: 100%;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+            -webkit-border-radius: 15px 60px 0 15px;
+            -moz-border-radius: 15px 60px 0 15px;
+            border-radius: 15px 60px 0 15px;
+        }
+
+        .top-roof {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: #ffe400;
+            border-bottom: solid 4px #4b1a61;
+            width: 100%;
+            height: 14px;
+        }
+
+        .rooftop {
+            background-color: #fa7775;
+            border: solid 4px #4b1a61;
+            border-bottom: none;
+            bottom: 100%;
+            overflow: hidden;
+            position: absolute;
+        }
+
+        .rooftop::after {
+            content: "";
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            background-color: #f96461;
+            height: 50%;
+        }
+
+        .rooftop.back {
+            width: 60px;
+            left: 20%;
+            height: 15px;
+            -webkit-border-radius: 4px 4px 0 0;
+            -moz-border-radius: 4px 4px 0 0;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .rooftop.front {
+            width: 80px;
+            left: 40%;
+            height: 25px;
+            -webkit-border-radius: 4px 20px 0 0;
+            -moz-border-radius: 4px 20px 0 0;
+            border-radius: 4px 20px 0 0;
+        }
+
+        .side-guard {
+            background-color: #fa7775;
+            border-top: solid 4px #4b1a61;
+            bottom: 4px;
+            position: absolute;
+            left: 4px;
+            width: calc(100% - 8px);
+            height: 50px;
+            -webkit-border-radius: 0 0 0 10px;
+            -moz-border-radius: 0 0 0 10px;
+            border-radius: 0 0 0 10px;
+        }
+
+        .side-guard .shade {
+            position: absolute;
+            left: 0px;
+            -webkit-border-radius: 0 0 0 15px;
+            -moz-border-radius: 0 0 0 15px;
+            border-radius: 0 0 0 15px;
+            bottom: 0px;
+            width: 100%;
+            background-color: #f96461;
+            height: 40%;
+        }
+
+        .side-guard .bumper {
+            position: absolute;
+            border: solid 4px #4b1a61;
+            height: 18px;
+            position: absolute;
+            background-color: #a6a6a6;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
+
+        .side-guard .bumper.front {
+            right: -12px;
+            width: 22px;
+            height: 22px;
+            bottom: -10px;
+        }
+
+        .side-guard .bumper.back {
+            width: 29px;
+            top: 11px;
+            -webkit-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            left: -15px;
+        }
+
+        .side-guard .front-indicator {
+            width: 26px;
+            height: 11px;
+            -webkit-box-shadow: 0 3px 0 #f96461;
+            -moz-box-shadow: 0 3px 0 #f96461;
+            box-shadow: 0 3px 0 #f96461;
+            position: absolute;
+            border: solid 3px #4b1a61;
+            right: 10px;
+            background-color: #ffe400;
+            top: 5px;
+        }
+
+        .indi {
+            width: 24px;
+            height: 10px;
+            -webkit-box-shadow: 0 3px 0 #a7e3ff;
+            -moz-box-shadow: 0 3px 0 #a7e3ff;
+            box-shadow: 0 3px 0 #a7e3ff;
+            position: absolute;
+            border: solid 3px #4b1a61;
+            left: 10px;
+            background-color: #ffa700;
+        }
+
+        .indi.back-top-indicator {
+            top: 24px;
+        }
+
+        .indi.back-bottom-indicator {
+            bottom: 60px;
+        }
+
+        .back-window {
+            height: 53%;
+            top: 14%;
+            left: 50px;
+            width: 190px;
+            position: absolute;
+        }
+
+        .back-window .window-base {
+            width: 100%;
+            height: 12px;
+            background-color: #abec39;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            border: solid 3px #4b1a61;
+            -webkit-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-window .window-base.top {
+            top: 0;
+        }
+
+        .back-window .window-base.bottom {
+            bottom: 0;
+            position: absolute;
+            left: 0;
+        }
+
+        .back-window .sun-shade {
+            background-color: #fa7775;
+            border: solid 4px #4b1a61;
+            border-top: none;
+            width: 90%;
+            margin-left: 4.5%;
+            height: 23px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .back-window .curtain {
+            position: relative;
+            width: 90%;
+            margin-left: 5%;
+            font-size: 0;
+            z-index: 2;
+        }
+
+        .back-window .curtain span {
+            width: calc(100% / 8);
+            height: 15px;
+            -webkit-border-radius: 0 0 15px 15px;
+            -moz-border-radius: 0 0 15px 15px;
+            border-radius: 0 0 15px 15px;
+            display: inline-block;
+            background-color: #fa7775;
+            border: solid 4px #4b1a61;
+            border-top: none;
+            -webkit-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            margin-left: -4px;
+            -webkit-animation: curtain 0.5s infinite linear;
+            -moz-animation: curtain 0.5s infinite linear;
+            animation: curtain 0.5s infinite linear;
+        }
+
+        .back-window .curtain span:nth-child(even) {
+            background-color: #fff;
+        }
+
+        .back-window .curtain span+span {
+            width: calc((100% / 8) + 2px);
+        }
+
+        .back-window .windows-glass-wrap {
+            background-color: #f5f4f1;
+            border-left: solid 4px #4b1a61;
+            height: 60px;
+            width: 80%;
+            margin-left: 9%;
+            margin-top: -10px;
+            border-right: solid 4px #4b1a61;
+            padding: 2px 5px;
+            font-size: 0;
+        }
+
+        .back-window .windows-glass-wrap .glass {
+            background-color: #7ad5ff;
+            overflow: hidden;
+            border: solid 3px #4b1a61;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            border-radius: 6px;
+            width: 46%;
+            height: 100%;
+            margin-top: -3px;
+            display: inline-block;
+            position: relative;
+            z-index: 0;
+        }
+
+        .back-window .windows-glass-wrap .glass::after {
+            content: "";
+            position: absolute;
+            background-color: rgba(71, 197, 255, 0.5);
+            width: 100%;
+            -webkit-border-radius: 0 0 10px 10px;
+            -moz-border-radius: 0 0 10px 10px;
+            border-radius: 0 0 10px 10px;
+            height: 60%;
+            top: 0;
+            left: 0;
+        }
+
+        .back-window .windows-glass-wrap .glass+.glass {
+            margin-left: 4%;
+        }
+
+        .back-window .windows-glass-wrap .light {
+            width: 130%;
+            height: 100%;
+            position: absolute;
+            top: -7px;
+            left: -45%;
+            -webkit-opacity: 0.5;
+            -moz-opacity: 0.5;
+            opacity: 0.5;
+            z-index: 0;
+            -webkit-transform: rotate(115deg);
+            -moz-transform: rotate(115deg);
+            transform: rotate(115deg);
+            -webkit-animation: glare 2s infinite linear;
+            -moz-animation: glare 2s infinite linear;
+            animation: glare 2s infinite linear;
+        }
+
+        .back-window .windows-glass-wrap .light span {
+            width: 100%;
+            display: block;
+            margin-bottom: 2px;
+            background-color: #fff;
+        }
+
+        .back-window .windows-glass-wrap .light .light1 {
+            height: 10px;
+        }
+
+        .back-window .windows-glass-wrap .light .light2 {
+            height: 3px;
+        }
+
+        .back-window .windows-glass-wrap .light .light3 {
+            height: 6px;
+        }
+
+        .main-door {
+            position: absolute;
+            right: 120px;
+            bottom: 0;
+            border: solid 4px #4b1a61;
+            -webkit-border-radius: 10px 10px 0 0;
+            -moz-border-radius: 10px 10px 0 0;
+            border-radius: 10px 10px 0 0;
+            width: 80px;
+            height: 80%;
+            z-index: 9;
+            background-color: #f5f4f1;
+        }
+
+        .main-door::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 11%;
+            background-color: #eae8e2;
+        }
+
+        .main-door .glass {
+            background-color: #60cdff;
+            border: solid 3px #4b1a61;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            width: 85%;
+            height: 60px;
+            margin-top: 5px;
+            display: inline-block;
+            overflow: hidden;
+            position: relative;
+            z-index: 0;
+        }
+
+        .main-door .glass::after {
+            content: "";
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.3);
+            width: 100%;
+            -webkit-border-radius: 12px 12px 10px 10px;
+            -moz-border-radius: 12px 12px 10px 10px;
+            border-radius: 12px 12px 10px 10px;
+            height: 60%;
+            bottom: 0;
+            left: 0;
+        }
+
+        .main-door .glass .light {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-opacity: 0.5;
+            -moz-opacity: 0.5;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .main-door .glass .light span {
+            height: 70%;
+            margin-top: 15%;
+            display: inline-block;
+            background-color: #14b5ff;
+        }
+
+        .main-door .glass .light .light1 {
+            width: 15px;
+            -webkit-border-radius: 10px 0 0 10px;
+            -moz-border-radius: 10px 0 0 10px;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .main-door .glass .light .light2 {
+            width: 10px;
+            -webkit-border-radius: 0 10px 10px 0;
+            -moz-border-radius: 0 10px 10px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .main-door .door-handle {
+            background-color: #fa7775;
+            border: solid 0.2em #4b1a61;
+            width: 10px;
+            margin-left: 4.5%;
+            height: 22px;
+            position: absolute;
+            z-index: 0;
+            right: 5px;
+            bottom: 40%;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
+        }
+
+        .main-door .door-handle::before {
+            content: "";
+            position: absolute;
+            width: 50%;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.3);
+            height: 100%;
+            display: block;
+        }
+
+        .front-window {
+            top: 14%;
+            right: 20px;
+            width: 70px;
+            height: 60%;
+            position: absolute;
+        }
+
+        .front-window .window-base {
+            width: 100%;
+            height: 10px;
+            background-color: #abec39;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            border: solid 3px #4b1a61;
+            -webkit-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+            top: 0;
+        }
+
+        .front-window .sun-shade {
+            background-color: #fa7775;
+            border: solid 4px #4b1a61;
+            border-top: none;
+            width: 90%;
+            margin-left: 4.5%;
+            height: 23px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .front-window .curtain {
+            position: relative;
+            width: 90%;
+            margin-left: 6%;
+            font-size: 0;
+            z-index: 2;
+        }
+
+        .front-window .curtain span {
+            width: calc(100% / 3);
+            height: 15px;
+            -webkit-border-radius: 0 0 15px 15px;
+            -moz-border-radius: 0 0 15px 15px;
+            border-radius: 0 0 15px 15px;
+            display: inline-block;
+            background-color: #fa7775;
+            border: solid 4px #4b1a61;
+            border-top: none;
+            -webkit-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            margin-left: -4px;
+        }
+
+        .front-window .curtain span:nth-child(even) {
+            background-color: #fff;
+        }
+
+        .front-window .curtain span+span {
+            width: calc((100% / 3) + 2px);
+        }
+
+        .front-window .windows-glass-wrap {
+            height: 40px;
+            width: 80%;
+            margin-left: 9%;
+            margin-top: -10px;
+            border: solid 4px #4b1a61;
+            border-top: none;
+            background-color: #7ad5ff;
+            -webkit-border-radius: 0 0 10px 10px;
+            -moz-border-radius: 0 0 10px 10px;
+            border-radius: 0 0 10px 10px;
+            padding: 2px 5px;
+            font-size: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .front-window .windows-glass-wrap .light {
+            width: 120%;
+            height: 100%;
+            position: absolute;
+            top: -7px;
+            left: -15%;
+            -webkit-opacity: 0.4;
+            -moz-opacity: 0.4;
+            opacity: 0.4;
+            z-index: 0;
+            -webkit-transform: rotate(115deg);
+            -moz-transform: rotate(115deg);
+            transform: rotate(115deg);
+            -webkit-animation: glare 1.5s infinite linear;
+            -moz-animation: glare 1.5s infinite linear;
+            animation: glare 1.5s infinite linear;
+        }
+
+        .front-window .windows-glass-wrap .light span {
+            width: 100%;
+            display: block;
+            margin-bottom: 2px;
+            background-color: #fff;
+        }
+
+        .front-window .windows-glass-wrap .light .light1 {
+            height: 10px;
+        }
+
+        .front-window .windows-glass-wrap .light .light2 {
+            height: 3px;
+        }
+
+        .front-window .windows-glass-wrap .light .light3 {
+            height: 6px;
+        }
+
+        .front-window .air-hole {
+            position: absolute;
+            width: 100%;
+            bottom: 5px;
+            padding-top: 5px;
+        }
+
+        .front-window .air-hole span {
+            width: 30px;
+            height: 5px;
+            background-color: #f5f4f1;
+            display: block;
+            margin: auto;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
+            border: solid 0.15em #4b1a61;
+        }
+
+        .front-window .air-hole span+span {
+            margin-top: 1px;
+        }
+
+        .wheel-wrap {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            z-index: 9;
+            bottom: -40px;
+        }
+
+        .wheel-wrap .wheel-shadow {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-top: solid 40px #4b1a61;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            position: relative;
+            -webkit-animation: wheelShadow 3s infinite ease;
+            -moz-animation: wheelShadow 3s infinite ease;
+            animation: wheelShadow 3s infinite ease;
+        }
+
+        .wheel-wrap.back {
+            left: 80px;
+        }
+
+        .wheel-wrap.front {
+            right: 70px;
+        }
+
+        .wheel-wrap .wheel {
+            width: 76%;
+            height: 76%;
+            left: 12%;
+            top: 12%;
+            position: absolute;
+            text-align: center;
+            font-size: 0;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+        }
+
+        .wheel-wrap .wheel::after {
+            content: "";
+            top: 1px;
+            left: 2px;
+            height: 100%;
+            position: absolute;
+            width: calc(100% - 4px);
+            -webkit-box-shadow: inset 0 7px 0 #747474;
+            -moz-box-shadow: inset 0 7px 0 #747474;
+            box-shadow: inset 0 7px 0 #747474;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            z-index: 9;
+        }
+
+        .wheel-wrap .wheel .wheel-outer {
+            position: absolute;
+            width: 100%;
+            background-color: #a6a6a6;
+            border: solid 3px #4b1a61;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            top: 0;
+            left: 0;
+            height: 100%;
+            -webkit-animation: wheel 0.4s infinite linear;
+            -moz-animation: wheel 0.4s infinite linear;
+            animation: wheel 0.4s infinite linear;
+        }
+
+        .wheel-wrap .wheel .wheel-outer::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 5px;
+            background-color: #b8b8b8;
+            top: 5px;
+            left: 16px;
+            z-index: 8;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+        }
+
+        .wheel-wrap .wheel .wheel-cup {
+            width: 60%;
+            height: 60%;
+            margin-top: 20%;
+            display: inline-block;
+            position: relative;
+            background-color: #60cdff;
+            border: solid 3px #3b154d;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            transform: rotate(45deg);
+            padding: 5px 4px;
+        }
+
+        .wheel-wrap .wheel .wheel-cup::after {
+            content: "";
+            width: 8px;
+            position: absolute;
+            left: 41%;
+            top: 40%;
+            height: 3px;
+            background-color: #00aaf9;
+            display: inline-block;
+        }
+
+        .wheel-wrap .wheel .wheel-cup span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin: 1px;
+            background-color: #a6a6a6;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            border: solid 1px #3b154d;
+        }
+
+        .love-wrap {
+            position: absolute;
+            left: 0;
+            margin-top: 0;
+            top: 0;
+        }
+
+        .love-wrap .love {
+            width: 34px;
+            height: 34px;
+            position: relative;
+            display: inline-block;
+            font-size: 0;
+            -webkit-transform: rotate(30deg);
+            -moz-transform: rotate(30deg);
+            transform: rotate(30deg);
+        }
+
+        .love-wrap .love .circle {
+            background-color: #fe1239;
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .love-wrap .love .circle1 {
+            left: 0;
+            bottom: 0;
+        }
+
+        .love-wrap .love .circle2 {
+            right: 0;
+            top: 0;
+        }
+
+        .love-wrap .love .square {
+            background-color: #fe1239;
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            display: inline-block;
+            right: 0;
+            bottom: 0;
+        }
+
+        .love-front {
+            position: absolute;
+            right: 24%;
+            bottom: 30%;
+            z-index: 8;
+            -webkit-transform: rotate(50deg);
+            -moz-transform: rotate(50deg);
+            transform: rotate(50deg);
+        }
+
+        .love-front .love-wrap {
+            -webkit-opacity: 0;
+            -moz-opacity: 0;
+            opacity: 0;
+        }
+
+        .love-front .love-wrap:nth-child(1) {
+            -webkit-animation: love1 5s infinite ease-in 0.5s;
+            -moz-animation: love1 5s infinite ease-in 0.5s;
+            animation: love1 5s infinite ease-in 0.5s;
+        }
+
+        .love-front .love-wrap:nth-child(2) {
+            -webkit-animation: love1 5s infinite ease-in 1s;
+            -moz-animation: love1 5s infinite ease-in 1s;
+            animation: love1 5s infinite ease-in 1s;
+        }
+
+        .love-front .love-wrap:nth-child(3) {
+            -webkit-animation: love1 5s infinite ease-in 1.5s;
+            -moz-animation: love1 5s infinite ease-in 1.5s;
+            animation: love1 5s infinite ease-in 1.5s;
+        }
+
+        .love-front .love-wrap:nth-child(4) {
+            -webkit-animation: love1 5s infinite ease-in 2s;
+            -moz-animation: love1 5s infinite ease-in 2s;
+            animation: love1 5s infinite ease-in 2s;
+        }
+
+        .love-front .love-wrap:nth-child(5) {
+            -webkit-animation: love2 6s infinite ease-in 2.5s;
+            -moz-animation: love2 6s infinite ease-in 2.5s;
+            animation: love2 6s infinite ease-in 2.5s;
+        }
+
+        .love-front .love-wrap:nth-child(6) {
+            -webkit-animation: love2 6s infinite ease-in 3s;
+            -moz-animation: love2 6s infinite ease-in 3s;
+            animation: love2 6s infinite ease-in 3s;
+        }
+
+        .love-front .love-wrap:nth-child(7) {
+            -webkit-animation: love2 6s infinite ease-in 3.5s;
+            -moz-animation: love2 6s infinite ease-in 3.5s;
+            animation: love2 6s infinite ease-in 3.5s;
+        }
+
+        .love-front .love-wrap:nth-child(8) {
+            -webkit-animation: love2 6s infinite ease-in 4s;
+            -moz-animation: love2 6s infinite ease-in 4s;
+            animation: love2 6s infinite ease-in 4s;
+        }
+
+        .love-front .love-wrap:nth-child(9) {
+            -webkit-animation: love3 4s infinite ease-in 4.5s;
+            -moz-animation: love3 4s infinite ease-in 4.5s;
+            animation: love3 4s infinite ease-in 4.5s;
+        }
+
+        .love-front .love-wrap:nth-child(10) {
+            -webkit-animation: love3 4s infinite ease-in 5s;
+            -moz-animation: love3 4s infinite ease-in 5s;
+            animation: love3 4s infinite ease-in 5s;
+        }
+
+        .love-front .love-wrap:nth-child(11) {
+            -webkit-animation: love3 4s infinite ease-in 5.5s;
+            -moz-animation: love3 4s infinite ease-in 5.5s;
+            animation: love3 4s infinite ease-in 5.5s;
+        }
+
+        .love-front .love-wrap:nth-child(12) {
+            -webkit-animation: love3 4s infinite ease-in 6s;
+            -moz-animation: love3 4s infinite ease-in 6s;
+            animation: love3 4s infinite ease-in 6s;
+        }
+
+        .love-back {
+            position: absolute;
+            left: 18%;
+            bottom: 20%;
+            z-index: 5;
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+        }
+
+        .love-back .love {
+            -webkit-transform: rotate(100deg);
+            -moz-transform: rotate(100deg);
+            transform: rotate(100deg);
+        }
+
+        .love-back .love-wrap {
+            right: 0;
+        }
+
+        .love-back .love-wrap:nth-child(1) {
+            -webkit-animation: love4 4s infinite ease-in 0.5s;
+            -moz-animation: love4 4s infinite ease-in 0.5s;
+            animation: love4 4s infinite ease-in 0.5s;
+        }
+
+        .love-back .love-wrap:nth-child(2) {
+            -webkit-animation: love4 4s infinite ease-in 1s;
+            -moz-animation: love4 4s infinite ease-in 1s;
+            animation: love4 4s infinite ease-in 1s;
+        }
+
+        .love-back .love-wrap:nth-child(3) {
+            -webkit-animation: love4 4s infinite ease-in 1.5s;
+            -moz-animation: love4 4s infinite ease-in 1.5s;
+            animation: love4 4s infinite ease-in 1.5s;
+        }
+
+        .love-back .love-wrap:nth-child(4) {
+            -webkit-animation: love4 4s infinite ease-in 2s;
+            -moz-animation: love4 4s infinite ease-in 2s;
+            animation: love4 4s infinite ease-in 2s;
+        }
+
+        .love-back .love-wrap:nth-child(1) {
+            -webkit-animation: love4 4s infinite ease-in 0s;
+            -moz-animation: love4 4s infinite ease-in 0s;
+            animation: love4 4s infinite ease-in 0s;
+        }
+
+        .love-back .love-wrap:nth-child(5) {
+            -webkit-animation: love5 3s infinite ease-in 2.5s;
+            -moz-animation: love5 3s infinite ease-in 2.5s;
+            animation: love5 3s infinite ease-in 2.5s;
+        }
+
+        .love-back .love-wrap:nth-child(6) {
+            -webkit-animation: love5 3s infinite ease-in 3s;
+            -moz-animation: love5 3s infinite ease-in 3s;
+            animation: love5 3s infinite ease-in 3s;
+        }
+
+        .love-back .love-wrap:nth-child(7) {
+            -webkit-animation: love5 3s infinite ease-in 3.5s;
+            -moz-animation: love5 3s infinite ease-in 3.5s;
+            animation: love5 3s infinite ease-in 3.5s;
+        }
+
+        .love-back .love-wrap:nth-child(8) {
+            -webkit-animation: love5 3s infinite ease-in 4s;
+            -moz-animation: love5 3s infinite ease-in 4s;
+            animation: love5 3s infinite ease-in 4s;
+        }
+
+        @-webkit-keyframes love1 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+                -moz-transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+                transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+            }
+        }
+
+        @-moz-keyframes love1 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+                -moz-transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+                transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+            }
+        }
+
+        @-ms-keyframes love1 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+                -moz-transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+                transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+            }
+        }
+
+        @keyframes love1 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.2) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+                -moz-transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+                transform: scale(0.8) rotate(-40deg) translate3d(-50px, -400px, 0);
+            }
+        }
+
+        @-webkit-keyframes love2 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+                -moz-transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+                transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+            }
+        }
+
+        @-moz-keyframes love2 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+                -moz-transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+                transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+            }
+        }
+
+        @-ms-keyframes love2 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+                -moz-transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+                transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+            }
+        }
+
+        @keyframes love2 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+                -moz-transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+                transform: scale(0.7) rotate(-50deg) translate3d(-80px, -450px, 0);
+            }
+        }
+
+        @-webkit-keyframes love3 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+                -moz-transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+                transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+            }
+        }
+
+        @-moz-keyframes love3 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+                -moz-transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+                transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+            }
+        }
+
+        @-ms-keyframes love3 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+                -moz-transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+                transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+            }
+        }
+
+        @keyframes love3 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                -moz-transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+                transform: scale(0.3) rotate(0deg) translate3d(100px, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+                -moz-transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+                transform: scale(0.65) rotate(-60deg) translate3d(-40px, -400px, 0);
+            }
+        }
+
+        @-webkit-keyframes love4 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                -moz-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+                -moz-transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+                transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+            }
+        }
+
+        @-moz-keyframes love4 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                -moz-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+                -moz-transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+                transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+            }
+        }
+
+        @-ms-keyframes love4 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                -moz-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+                -moz-transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+                transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+            }
+        }
+
+        @keyframes love4 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                -moz-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+                -moz-transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+                transform: scale(0.6) rotate(-25deg) translate3d(100px, -200px, 0);
+            }
+        }
+
+        @-webkit-keyframes love5 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                -moz-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+                -moz-transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+                transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+            }
+        }
+
+        @-moz-keyframes love5 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                -moz-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+                -moz-transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+                transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+            }
+        }
+
+        @-ms-keyframes love5 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                -moz-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+                -moz-transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+                transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+            }
+        }
+
+        @keyframes love5 {
+            0% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                -moz-transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+                transform: scale(0.2) rotate(0) translate3d(0, 0, 0);
+            }
+
+            50% {
+                -webkit-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            100% {
+                -webkit-opacity: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+                -moz-transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+                transform: scale(0.5) rotate(-20deg) translate3d(200px, -250px, 0);
+            }
+        }
+
+        @-webkit-keyframes wheel {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-moz-keyframes wheel {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-ms-keyframes wheel {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes wheel {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes wheelShadow {
+
+            0%,
+            20%,
+            40%,
+            45%,
+            60%,
+            80%,
+            100% {
+                top: 0;
+            }
+
+            70% {
+                top: 3px;
+            }
+
+            30%,
+            90% {
+                top: 6px;
+            }
+        }
+
+        @-moz-keyframes wheelShadow {
+
+            0%,
+            20%,
+            40%,
+            45%,
+            60%,
+            80%,
+            100% {
+                top: 0;
+            }
+
+            70% {
+                top: 3px;
+            }
+
+            30%,
+            90% {
+                top: 6px;
+            }
+        }
+
+        @-ms-keyframes wheelShadow {
+
+            0%,
+            20%,
+            40%,
+            45%,
+            60%,
+            80%,
+            100% {
+                top: 0;
+            }
+
+            70% {
+                top: 3px;
+            }
+
+            30%,
+            90% {
+                top: 6px;
+            }
+        }
+
+        @keyframes wheelShadow {
+
+            0%,
+            20%,
+            40%,
+            45%,
+            60%,
+            80%,
+            100% {
+                top: 0;
+            }
+
+            70% {
+                top: 3px;
+            }
+
+            30%,
+            90% {
+                top: 6px;
+            }
+        }
+
+        @-webkit-keyframes body {
+
+            0%,
+            20%,
+            40%,
+            45%,
+            60%,
+            80%,
+            100% {
+                top: 0;
+            }
+
+            70% {
+                top: 3px;
+            }
+
+            30%,
+            90% {
+                top: 6px;
+            }
+        }
+
+        @-moz-keyframes body {
+
+            0%,
+            20%,
+            40%,
+            45%,
+            60%,
+            80%,
+            100% {
+                top: 0;
+            }
+
+            70% {
+                top: 3px;
+            }
+
+            30%,
+            90% {
+                top: 6px;
+            }
+        }
+
+        @-ms-keyframes body {
+
+            0%,
+            20%,
+            40%,
+            45%,
+            60%,
+            80%,
+            100% {
+                top: 0;
+            }
+
+            70% {
+                top: 3px;
+            }
+
+            30%,
+            90% {
+                top: 6px;
+            }
+        }
+
+        @keyframes body {
+
+            0%,
+            20%,
+            40%,
+            45%,
+            60%,
+            80%,
+            100% {
+                top: 0;
+            }
+
+            70% {
+                top: 3px;
+            }
+
+            30%,
+            90% {
+                top: 6px;
+            }
+        }
+
+        @-webkit-keyframes glare {
+            from {
+                left: 100%;
+            }
+
+            to {
+                left: -100%;
+            }
+        }
+
+        @-moz-keyframes glare {
+            from {
+                left: 100%;
+            }
+
+            to {
+                left: -100%;
+            }
+        }
+
+        @-ms-keyframes glare {
+            from {
+                left: 100%;
+            }
+
+            to {
+                left: -100%;
+            }
+        }
+
+        @keyframes glare {
+            from {
+                left: 100%;
+            }
+
+            to {
+                left: -100%;
+            }
+        }
+
+        @-webkit-keyframes roadLine {
+            from {
+                -webkit-transform: translate(0, 0);
+                -moz-transform: translate(0, 0);
+                transform: translate(0, 0);
+            }
+
+            to {
+                -webkit-transform: translate(-800px, 0);
+                -moz-transform: translate(-800px, 0);
+                transform: translate(-800px, 0);
+            }
+        }
+
+        @-moz-keyframes roadLine {
+            from {
+                -webkit-transform: translate(0, 0);
+                -moz-transform: translate(0, 0);
+                transform: translate(0, 0);
+            }
+
+            to {
+                -webkit-transform: translate(-800px, 0);
+                -moz-transform: translate(-800px, 0);
+                transform: translate(-800px, 0);
+            }
+        }
+
+        @-ms-keyframes roadLine {
+            from {
+                -webkit-transform: translate(0, 0);
+                -moz-transform: translate(0, 0);
+                transform: translate(0, 0);
+            }
+
+            to {
+                -webkit-transform: translate(-800px, 0);
+                -moz-transform: translate(-800px, 0);
+                transform: translate(-800px, 0);
+            }
+        }
+
+        @keyframes roadLine {
+            from {
+                -webkit-transform: translate(0, 0);
+                -moz-transform: translate(0, 0);
+                transform: translate(0, 0);
+            }
+
+            to {
+                -webkit-transform: translate(-800px, 0);
+                -moz-transform: translate(-800px, 0);
+                transform: translate(-800px, 0);
+            }
+        }
+
+        @-webkit-keyframes tree {
+            from {
+                -webkit-transform: translate(50px, 0);
+                -moz-transform: translate(50px, 0);
+                transform: translate(50px, 0);
+            }
+
+            to {
+                -webkit-transform: translate(-1600px, 0);
+                -moz-transform: translate(-1600px, 0);
+                transform: translate(-1600px, 0);
+            }
+        }
+
+        @-moz-keyframes tree {
+            from {
+                -webkit-transform: translate(50px, 0);
+                -moz-transform: translate(50px, 0);
+                transform: translate(50px, 0);
+            }
+
+            to {
+                -webkit-transform: translate(-1600px, 0);
+                -moz-transform: translate(-1600px, 0);
+                transform: translate(-1600px, 0);
+            }
+        }
+
+        @-ms-keyframes tree {
+            from {
+                -webkit-transform: translate(50px, 0);
+                -moz-transform: translate(50px, 0);
+                transform: translate(50px, 0);
+            }
+
+            to {
+                -webkit-transform: translate(-1600px, 0);
+                -moz-transform: translate(-1600px, 0);
+                transform: translate(-1600px, 0);
+            }
+        }
+
+        @keyframes tree {
+            from {
+                -webkit-transform: translate(50px, 0);
+                -moz-transform: translate(50px, 0);
+                transform: translate(50px, 0);
+            }
+
+            to {
+                -webkit-transform: translate(-1600px, 0);
+                -moz-transform: translate(-1600px, 0);
+                transform: translate(-1600px, 0);
+            }
+        }
+
+        body {
+            font-family: "Muli", sans-serif;
+        }
+
+        .footer {
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            color: #ea4c89;
+            text-decoration: none;
+            text-align: left;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .footer span {
+            font-size: 12px;
+        }
+
+        .footer a {
+            font-weight: bold;
+            font-size: 10px;
+            color: #ea4c89;
+            text-decoration: underline;
+        }
+
+        .footer a:hover {
+            text-decoration: none;
+        }
+
+        .footer .dribble img {
+            max-width: 100%;
+            width: 26px;
+            position: relative;
+            top: -2px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='stage'>
+        <div class='ground-line'>
+            <div>
+                <span class='line1'></span>
+                <span class='line2'></span>
+                <span class='line3'></span>
+                <span class='line1'></span>
+                <span class='line2'></span>
+                <span class='line3'></span>
+            </div>
+        </div>
+        <div class='tree-wrap'>
+            <div class='tree'>
+                <div class='stem'>
+                    <div class='branch branch1'></div>
+                    <div class='branch branch2'></div>
+                    <div class='branch branch3'></div>
+                </div>
+                <div class='leef leef1'></div>
+                <div class='leef leef2'></div>
+            </div>
+        </div>
+        <div class='love-front'>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+        </div>
+        <div class='love-back'>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+            <div class='love-wrap'>
+                <div class='love'>
+                    <span class='circle circle1'></span>
+                    <span class='circle circle2'></span>
+                    <span class='square'></span>
+                </div>
+            </div>
+        </div>
+        <h1 style="position: absolute;
+  top: 75%;
+  left: 23%;
+  /* font-family: cursive; */
+  font-size: 5rem;
+  color: indianred;">
+            I LOVE YOU
+        </h1>
+        <div class='vehicle-body'>
+            <div class='wrap-body'>
+                <div class='rooftop back'></div>
+                <div class='rooftop front'></div>
+                <div class='body-cover'>
+                    <div class='top-roof'></div>
+                    <div class='indi back-top-indicator'></div>
+                    <div class='indi back-bottom-indicator'></div>
+                    <div class='back-window'>
+                        <div class='window-base top'></div>
+                        <div class='window-base bottom'></div>
+                        <div class='sun-shade'></div>
+                        <div class='curtain'>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class='windows-glass-wrap'>
+                            <div class='glass'>
+                                <div class='light'>
+                                    <span class='light1'></span>
+                                    <span class='light2'></span>
+                                    <span class='light3'></span>
+                                </div>
+                            </div>
+                            <div class='glass'>
+                                <div class='light'>
+                                    <span class='light1'></span>
+                                    <span class='light2'></span>
+                                    <span class='light3'></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='front-window'>
+                        <div class='window-base'></div>
+                        <div class='sun-shade'></div>
+                        <div class='curtain'>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class='windows-glass-wrap'>
+                            <div class='light'>
+                                <span class='light1'></span>
+                                <span class='light2'></span>
+                                <span class='light3'></span>
+                            </div>
+                        </div>
+                        <div class='air-hole'>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class='main-door'>
+                    <div class='glass'>
+                        <div class='light'>
+                            <span class='light1'></span>
+                            <span class='light2'></span>
+                        </div>
+                    </div>
+                    <div class='door-handle'></div>
+                </div>
+                <div class='side-guard'>
+                    <div class='shade'></div>
+                    <div class='bumper back'></div>
+                    <div class='bumper front'></div>
+                    <div class='front-indicator'></div>
+                </div>
+            </div>
+            <div class='wheel-wrap back'>
+                <div class='wheel-shadow'></div>
+                <div class='wheel'>
+                    <div class='wheel-outer'>
+                        <div class='wheel-cup'>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='wheel-wrap front'>
+                <div class='wheel-shadow'></div>
+                <div class='wheel'>
+                    <div class='wheel-outer'>
+                        <div class='wheel-cup'>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
